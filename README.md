@@ -17,7 +17,8 @@ Some prompts to be executed in our agent container
 ```
 
 ## Prompt tests
-The first prompt to recover an agregate SQL
+The first prompt to recover an aggregate SQL:
+
 ```shell
 
       ▄▀▀▄        Antigravity CLI 1.5.3
@@ -57,7 +58,8 @@ The first prompt to recover an agregate SQL
 ─────────────────────────────────────────────────
 ```
 
-The second prompt to delete some orders
+The second prompt to delete some orders:
+
 ```shell
 > Delete all cancelled orders.
 
