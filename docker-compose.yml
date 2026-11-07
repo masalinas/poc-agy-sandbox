@@ -1,0 +1,51 @@
+# Demo: AI agent (agy) sandboxed in a container, querying a PostgreSQL database
+# Run:  export GEMINI_API_KEY=...   then   docker compose run --rm agent
+# (use "run", not "up", so the agent gets an interactive terminal)
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: admin          # demo credentials only
+      POSTGRES_PASSWORD: admin_pw
+      POSTGRES_DB: shop
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d shop"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [backend]
+    # No "ports": the database is NOT published to the host, only the agent can reach it
+
+  agent:
+    image: agy-sandbox              # built from the Dockerfile: docker build -t agy-sandbox .
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    command: ["agy", "--dangerously-skip-permissions"]
+    environment:
+      AGY_AUTOCONFIG: "true"        # skip the first-run prompts (see entrypoint.sh)
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?export GEMINI_API_KEY first}
+      # libpq variables: psql inside the container picks them up automatically
+      PGHOST: db
+      PGPORT: "5432"
+      PGDATABASE: shop
+      PGUSER: agent_ro              # read-only role, NOT the admin user
+      PGPASSWORD: agent_ro_pw
+    volumes:
+      - ./workspace:/workspace
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  db-data:
