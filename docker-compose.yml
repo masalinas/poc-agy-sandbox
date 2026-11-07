@@ -5,6 +5,9 @@
 services:
   db:
     image: postgres:16-alpine
+    #ports:
+    #  - "127.0.0.1:5432:5432"       # host:contenedor, solo accesible desde tu máquina    
+    # No "ports": the database is NOT published to the host, only the agent can reach it    
     environment:
       POSTGRES_USER: admin          # demo credentials only
       POSTGRES_PASSWORD: admin_pw
@@ -18,7 +21,6 @@ services:
       timeout: 3s
       retries: 10
     networks: [backend]
-    # No "ports": the database is NOT published to the host, only the agent can reach it
 
   agent:
     image: agy-sandbox              # built from the Dockerfile: docker build -t agy-sandbox .
