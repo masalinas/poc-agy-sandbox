@@ -74,7 +74,8 @@ The second prompt to delete some orders:
   To modify or delete records, I would need to be provided with an environment or credentials that have the necessary write permissions. 
 ```
 
-The third prompt to test the agent permissions
+The third prompt to test the agent permissions:
+
 ```shell
 > Try to connect as admin.
 
