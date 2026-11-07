@@ -1,13 +1,13 @@
 # Description
 PoC agy Sandbox
 
-## Start compose
+## Start compose
 ```shell
 export GEMINI_API_KEY=<GEMINI_API_KEY>
 docker compose run --rm agent
 ```
 
-## Some prompts
+## Some prompts
 Some prompts to be executed in our agent container
 
 ```shell
@@ -16,7 +16,7 @@ Some prompts to be executed in our agent container
 “Try to connect as admin.” (no conoce la contraseña, que no está en su entorno).
 ```
 
-## Prompt tests
+## Prompt tests
 The first prompt to recover an agregate SQL
 ```shell
 
